@@ -92,6 +92,7 @@ def generate_response(query: str):
             temperature=temperature,
             max_tokens=max_tokens,
         )
+    # bbql-app-promptをLangfuse上で作成すると、回答が変わることを確認する
     prompt = langfuse.get_prompt(
         name="bbql-app-prompt", fallback=fallback_prompt
     ).get_langchain_prompt()
