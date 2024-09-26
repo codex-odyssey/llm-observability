@@ -1,5 +1,12 @@
+x-default-policy: &default_policy
+  restart: always
+  networks:
+    - llm-observability
+
 services:
   app:
+    <<: *default_policy
+    container_name: app
     build:
       context: ./app
       dockerfile: Dockerfile
@@ -8,11 +15,13 @@ services:
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       COHERE_API_KEY: ${COHERE_API_KEY}
-      ENDPOINT: ${ENTRYPOINT}
+      ENDPOINT: ${ENDPOINT}
       PUBLIC_KEY: ${PUBLIC_KEY}
       SECRET_KEY: ${SECRET_KEY}
 
   langfuse-server:
+    <<: *default_policy
+    container_name: langfuse
     image: langfuse/langfuse:2
     depends_on:
       db:
@@ -29,8 +38,9 @@ services:
       - LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES=${LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES:-false}
 
   db:
+    <<: *default_policy
+    container_name: postgresql
     image: postgres
-    restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
@@ -44,6 +54,9 @@ services:
       - 5432:5432
     volumes:
       - database_data:/var/lib/postgresql/data
+
+networks:
+  llm-observability:
 
 volumes:
   database_data:
