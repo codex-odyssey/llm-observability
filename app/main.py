@@ -39,7 +39,9 @@ if "langchain_callback" not in st.session_state:
 langchain_callback = st.session_state["langchain_callback"]
 
 # Vector Storeの初期化
-vector_store = vs.initialize()
+if "vector_store" not in st.session_state:
+    st.session_state["vector_store"] = vs.initialize()
+vector_store = st.session_state["vector_store"]
 
 st.title("🍖 Ask the BigBaBy 🍖")
 st.caption(
