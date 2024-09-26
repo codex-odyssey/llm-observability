@@ -19,7 +19,7 @@ services:
       PUBLIC_KEY: ${PUBLIC_KEY}
       SECRET_KEY: ${SECRET_KEY}
     volumes:
-      - ./docs:/app/docs
+      - ./app/docs:/app/docs
     develop:
       watch:
         - action: sync
