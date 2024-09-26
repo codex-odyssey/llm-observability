@@ -1,4 +1,17 @@
 services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - 8501:8501
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      COHERE_API_KEY: ${COHERE_API_KEY}
+      ENDPOINT: ${ENTRYPOINT}
+      PUBLIC_KEY: ${PUBLIC_KEY}
+      SECRET_KEY: ${SECRET_KEY}
+
   langfuse-server:
     image: langfuse/langfuse:2
     depends_on:
