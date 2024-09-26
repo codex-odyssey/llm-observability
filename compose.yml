@@ -18,6 +18,15 @@ services:
       ENDPOINT: ${ENDPOINT}
       PUBLIC_KEY: ${PUBLIC_KEY}
       SECRET_KEY: ${SECRET_KEY}
+    volumes:
+      - ./docs:/app/docs
+    develop:
+      watch:
+        - action: sync
+          path: ./app/
+          target: /app
+        - action: rebuild
+          path: ./app/main.py
 
   langfuse-server:
     <<: *default_policy

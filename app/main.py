@@ -1,10 +1,10 @@
 import os, uuid
 from dotenv import load_dotenv, find_dotenv
+import vector_store as vs
 
 import streamlit as st
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts import PromptTemplate
-from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_cohere.chat_models import ChatCohere
@@ -36,6 +36,9 @@ langchain_callback = CallbackHandler(
     host=endpoint, public_key=public_key, secret_key=secret_key, session_id=session_id
 )
 
+# Vector Storeの初期化
+vector_store = vs.initialize()
+
 st.title("🍖 Ask the BigBaBy 🍖")
 st.caption(
     """
@@ -49,28 +52,47 @@ OpenAI GPT-4o, Cohere Command R+のどちらかを選んで利用可能です。
 with st.sidebar.container():
     with st.sidebar:
         model_name = st.sidebar.selectbox(
-            label="Model Name", options=["command-r-plus", "gpt-4o"]
+            label="Model Name", options=["command-r-plus", "gpt-4o-mini"]
+        )
+        max_tokens = st.sidebar.slider(
+            label="Max Tokens",
+            min_value=128,
+            max_value=2048,
+            value=1024,
+            step=128,
+            help="LLMが出力する最大のトークン長",
+        )
+        temperature = st.sidebar.slider(
+            label="Temperature",
+            min_value=0.0,
+            max_value=1.0,
+            value=0.7,
+            step=0.1,
+            help="モデルの出力のランダム性",
         )
 
 
 def generate_response(query: str):
     """Generate LLM response via streaming output."""
-    if model_name == "gpt-4o":
+    if model_name == "gpt-4o-mini":
         chat_model = ChatOpenAI(
-            api_key=openai_api_key, model=model_name, temperature=0, max_tokens=1024
+            api_key=openai_api_key,
+            model=model_name,
+            temperature=temperature,
+            max_tokens=max_tokens,
         )
     elif model_name == "command-r-plus":
         chat_model = ChatCohere(
             cohere_api_key=cohere_api_key,
             model_name=model_name,
-            temperature=0,
-            max_tokens=1024,
+            temperature=temperature,
+            max_tokens=max_tokens,
         )
     prompt = langfuse.get_prompt(
-        name="bbql-app-prompt-dummy", fallback=fallback_prompt
+        name="bbql-app-prompt", fallback=fallback_prompt
     ).get_langchain_prompt()
     chain = (
-        {"question": RunnablePassthrough()}
+        {"question": RunnablePassthrough(), "context": vector_store.as_retriever()}
         | PromptTemplate.from_template(prompt)
         | chat_model
         | StrOutputParser()
