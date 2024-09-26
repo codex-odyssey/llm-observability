@@ -31,10 +31,13 @@ if "session_id" not in st.session_state:
 session_id = st.session_state["session_id"]
 
 # Langfuse関連
-langfuse = Langfuse(public_key=public_key, secret_key=secret_key, host=endpoint)
-langchain_callback = CallbackHandler(
-    host=endpoint, public_key=public_key, secret_key=secret_key, session_id=session_id
-)
+if "langfuse" not in st.session_state:
+    st.session_state["langfuse"] = Langfuse(public_key=public_key, secret_key=secret_key, host=endpoint)
+langfuse = st.session_state["langfuse"]
+if "langchain_callback" not in st.session_state:
+    st.session_state["langchain_callback"] = CallbackHandler(
+    host=endpoint, public_key=public_key, secret_key=secret_key, session_id=session_id)
+langchain_callback = st.session_state["langchain_callback"]
 
 # Vector Storeの初期化
 vector_store = vs.initialize()
