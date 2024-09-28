@@ -1,6 +1,7 @@
 # LLM Observability
 
-この度は『俺たちと探究する LLM オブザーバビリティ』をお読みいただき、誠にありがとうございます。 （また、本リポジトリに Star をつけていただけると、大変嬉しいです。）
+この度は『俺たちと探究する LLM オブザーバビリティ』をお読みいただき、誠にありがとうございます。   
+（また、本リポジトリに Star をつけていただけると、大変嬉しいです。）
 
 ## 前提
 
@@ -44,6 +45,11 @@ app          llm-observability-app   "streamlit run main.…"   app             
 langfuse     langfuse/langfuse:2     "dumb-init -- ./web/…"   langfuse-server   18 seconds ago   Up 3 seconds             0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
 postgresql   postgres                "docker-entrypoint.s…"   db                18 seconds ago   Up 7 seconds (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
 ```
+
+以下の、URLでそれぞれのコンポーネントにアクセスが可能です。
+
+- アプリケーション: [http://localhost:8501](http://localhost:8501)
+- Langfuse: [http://localhost:3000](http://localhost:3000)
 
 ## 諸注意
 
