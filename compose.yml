@@ -26,7 +26,7 @@ services:
           path: ./app/
           target: /app
         - action: rebuild
-          path: ./app/main.py
+          path: ./app/
 
   langfuse-server:
     <<: *default_policy

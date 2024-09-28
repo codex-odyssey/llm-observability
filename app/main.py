@@ -1,4 +1,4 @@
-import os, uuid
+import os, uuid, logging
 from dotenv import load_dotenv, find_dotenv
 import vector_store as vs
 
@@ -10,6 +10,8 @@ from langchain_openai.chat_models import ChatOpenAI
 from langchain_cohere.chat_models import ChatCohere
 from langfuse import Langfuse
 from langfuse.callback import CallbackHandler
+
+logger = logging.getLogger(name=__name__)
 
 _ = load_dotenv(find_dotenv())
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -31,17 +33,18 @@ session_id = st.session_state["session_id"]
 
 # Langfuse関連
 if "langfuse" not in st.session_state:
-    st.session_state["langfuse"] = Langfuse(public_key=public_key, secret_key=secret_key, host=endpoint)
+    st.session_state["langfuse"] = Langfuse(
+        public_key=public_key, secret_key=secret_key, host=endpoint
+    )
 langfuse = st.session_state["langfuse"]
 if "langchain_callback" not in st.session_state:
     st.session_state["langchain_callback"] = CallbackHandler(
-    host=endpoint, public_key=public_key, secret_key=secret_key, session_id=session_id)
+        host=endpoint,
+        public_key=public_key,
+        secret_key=secret_key,
+        session_id=session_id,
+    )
 langchain_callback = st.session_state["langchain_callback"]
-
-# Vector Storeの初期化
-if "vector_store" not in st.session_state:
-    st.session_state["vector_store"] = vs.initialize()
-vector_store = st.session_state["vector_store"]
 
 st.title("🍖 Ask the BigBaBy 🍖")
 st.caption(
@@ -75,6 +78,13 @@ with st.sidebar.container():
             help="モデルの出力のランダム性",
         )
 
+# Vector Storeの初期化
+if "vector_store" not in st.session_state:
+    st.session_state["vector_store"] = vs.initialize(
+        model_name=model_name, session_id=session_id
+    )
+vector_store = st.session_state["vector_store"]
+
 
 def generate_response(query: str):
     """Generate LLM response via streaming output."""
@@ -92,6 +102,9 @@ def generate_response(query: str):
             temperature=temperature,
             max_tokens=max_tokens,
         )
+    else:
+        logger.error("Unsetted model name")
+
     # bbql-app-promptをLangfuse上で作成すると、回答が変わることを確認する
     prompt = langfuse.get_prompt(
         name="bbql-app-prompt", fallback=fallback_prompt
