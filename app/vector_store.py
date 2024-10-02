@@ -26,7 +26,7 @@ def initialize(model_name: str, session_id: str) -> FAISS:
     trace = langfuse.trace(
         id=str(uuid.uuid4()),
         session_id=session_id,
-        name="InitializeVectorStore",
+        name="Initialize Vector Store",
         input=model_name,
     )
     if model_name == "gpt-4o-mini":

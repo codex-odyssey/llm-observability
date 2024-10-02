@@ -45,6 +45,7 @@ if "langchain_callback" not in st.session_state:
         public_key=public_key,
         secret_key=secret_key,
         session_id=session_id,
+        trace_name="Ask the BigBaBy"
     )
 langchain_callback = st.session_state["langchain_callback"]
 

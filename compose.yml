@@ -18,6 +18,7 @@ services:
       ENDPOINT: ${ENDPOINT}
       PUBLIC_KEY: ${PUBLIC_KEY}
       SECRET_KEY: ${SECRET_KEY}
+      LANGFUSE_RELEASE: 0.0.1-SNAPSHOT
     volumes:
       - ./app/docs:/app/docs
     develop:
