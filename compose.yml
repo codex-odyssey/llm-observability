@@ -15,9 +15,9 @@ services:
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       COHERE_API_KEY: ${COHERE_API_KEY}
-      ENDPOINT: ${ENDPOINT}
-      PUBLIC_KEY: ${PUBLIC_KEY}
-      SECRET_KEY: ${SECRET_KEY}
+      LANGFUSE_ENDPOINT: ${ENDPOINT}
+      LANGFUSE_PUBLIC_KEY: ${PUBLIC_KEY}
+      LANGFUSE_SECRET_KEY: ${SECRET_KEY}
       LANGFUSE_RELEASE: 0.0.1-SNAPSHOT
     volumes:
       - ./app/docs:/app/docs
@@ -32,7 +32,7 @@ services:
   langfuse-server:
     <<: *default_policy
     container_name: langfuse
-    image: langfuse/langfuse:2
+    image: langfuse/langfuse:2.82.0
     depends_on:
       db:
         condition: service_healthy
@@ -46,6 +46,15 @@ services:
       - NEXTAUTH_URL=http://localhost:3000
       - TELEMETRY_ENABLED=${TELEMETRY_ENABLED:-true}
       - LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES=${LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES:-false}
+      - LANGFUSE_INIT_ORG_ID=org-123456789
+      - LANGFUSE_INIT_ORG_NAME=tech-book-fest-17-llm-o11y
+      - LANGFUSE_INIT_PROJECT_ID=pj-1234567890
+      - LANGFUSE_INIT_PROJECT_NAME=Ask the BigBaBy
+      - LANGFUSE_INIT_PROJECT_PUBLIC_KEY=pk-1234567890
+      - LANGFUSE_INIT_PROJECT_SECRET_KEY=sk-1234567890
+      - LANGFUSE_INIT_USER_EMAIL=user@example.com
+      - LANGFUSE_INIT_USER_NAME=guest
+      - LANGFUSE_INIT_USER_PASSWORD=password
 
   db:
     <<: *default_policy
