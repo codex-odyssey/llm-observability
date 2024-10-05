@@ -18,9 +18,9 @@ logger = logging.getLogger(name=__name__)
 _ = load_dotenv(find_dotenv())
 openai_api_key = os.getenv("OPENAI_API_KEY")
 cohere_api_key = os.getenv("COHERE_API_KEY")
-endpoint = os.getenv("ENDPOINT")
-public_key = os.getenv("PUBLIC_KEY")
-secret_key = os.getenv("SECRET_KEY")
+endpoint = os.getenv("LANGFUSE_ENDPOINT")
+public_key = os.getenv("LANGFUSE_PUBLIC_KEY")
+secret_key = os.getenv("LANGFUSE_SECRET_KEY")
 fallback_prompt = """
 以下の質問に答えてください。
 
@@ -45,7 +45,7 @@ if "langchain_callback" not in st.session_state:
         public_key=public_key,
         secret_key=secret_key,
         session_id=session_id,
-        trace_name="Ask the BigBaBy"
+        trace_name="Ask the BigBaBy",
     )
 langchain_callback = st.session_state["langchain_callback"]
 
