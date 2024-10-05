@@ -54,11 +54,15 @@ def initialize(model_name: str, session_id: str) -> FAISS:
         document = loader.load()
         documents.extend(document)
     document_load_span.end(name="DocumentLoad", output=documents)
-    
+
     # 読み込んだDocumentをVectorStore(FAISS)に格納する
-    document_insert_span = trace.span(name="DocumentSave", input=documents)
+    document_insert_span = trace.span(
+        name="DocumentSave",
+        input=documents,
+        metadata={"vector_store": vector_store.__dict__},
+    )
     result = vector_store.add_documents(documents=documents)
     document_insert_span.end(name="DocumentSave", output=result)
-    
+
     trace.update(output=vector_store.__dict__)
     return vector_store
