@@ -15,9 +15,9 @@ services:
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       COHERE_API_KEY: ${COHERE_API_KEY}
-      LANGFUSE_ENDPOINT: ${ENDPOINT}
-      LANGFUSE_PUBLIC_KEY: ${PUBLIC_KEY}
-      LANGFUSE_SECRET_KEY: ${SECRET_KEY}
+      LANGFUSE_ENDPOINT: http://langfuse-server:3000
+      LANGFUSE_PUBLIC_KEY: pk-1234567890
+      LANGFUSE_SECRET_KEY: sk-1234567890
       LANGFUSE_RELEASE: 0.0.1-SNAPSHOT
     volumes:
       - ./app/docs:/app/docs
@@ -73,6 +73,23 @@ services:
       - 5432:5432
     volumes:
       - database_data:/var/lib/postgresql/data
+
+  jupyter:
+    <<: *default_policy
+    container_name: jupyter
+    image: jupyter/base-notebook
+    ports:
+      - 8080:8080
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./requirements.txt:/home/jovyan/requirements.txt
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True --port=8080 --notebook-dir=/home/jovyan/work
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      COHERE_API_KEY: ${COHERE_API_KEY}    
+      JUPYTER_ENABLE_LAB: yes
+      PUBLIC_KEY: pk-1234567890
+      SECRET_KEY: sk-1234567890
 
 networks:
   llm-observability:
