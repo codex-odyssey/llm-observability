@@ -20,6 +20,7 @@ comm==0.2.2
 dataclasses-json==0.6.7
 debugpy==1.8.5
 decorator==5.1.1
+defusedxml==0.7.1
 distro==1.9.0
 executing==2.1.0
 faiss-cpu==1.8.0.post1
@@ -120,5 +121,6 @@ tzdata==2024.1
 urllib3==2.2.2
 watchdog==4.0.2
 wcwidth==0.2.13
+wikipedia==1.4.0
 wrapt==1.16.0
 yarl==1.9.7
