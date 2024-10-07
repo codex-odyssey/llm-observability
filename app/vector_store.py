@@ -1,5 +1,4 @@
 import os, glob, logging, uuid
-from dotenv import load_dotenv, find_dotenv
 from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_cohere import CohereEmbeddings
@@ -10,7 +9,6 @@ from langfuse import Langfuse
 
 logger = logging.getLogger(name=__name__)
 
-_ = load_dotenv(find_dotenv())
 openai_api_key = os.getenv("OPENAI_API_KEY")
 cohere_api_key = os.getenv("COHERE_API_KEY")
 endpoint = os.getenv("LANGFUSE_ENDPOINT")

@@ -1,8 +1,8 @@
 import os, uuid, logging
-from dotenv import load_dotenv, find_dotenv
 import vector_store as vs
 
 import streamlit as st
+from streamlit_feedback import streamlit_feedback
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -15,7 +15,6 @@ from langfuse.callback import CallbackHandler
 
 logger = logging.getLogger(name=__name__)
 
-_ = load_dotenv(find_dotenv())
 openai_api_key = os.getenv("OPENAI_API_KEY")
 cohere_api_key = os.getenv("COHERE_API_KEY")
 endpoint = os.getenv("LANGFUSE_ENDPOINT")
@@ -151,9 +150,31 @@ def generate_response(query: str):
         | chat_model
         | StrOutputParser()
     )
-    response = chain.stream(input=query, config={"callbacks": [langchain_callback]})
+    st.session_state["run_id"] = str(uuid.uuid4())
+    run_id = st.session_state["run_id"]
+    response = chain.stream(
+        input=query, config={"callbacks": [langchain_callback], "run_id": run_id}
+    )
     for chunk in response:
         yield chunk
+
+
+def submit_user_feedback(user_feedback):
+    print(f"{user_feedback=}")
+    score_map = {"👍": 1, "👎": 0}
+    score = score_map.get(user_feedback.get("score"))
+    print(f"{score=}")
+    comment = user_feedback.get("text")
+    print(f"{comment=}")
+    if score is not None:
+        trace_id = langchain_callback.get_trace_id()
+        langfuse.score(
+            trace_id=trace_id,
+            value=score,
+            name="user-feedback",
+            comment=comment,
+        )
+    return user_feedback
 
 
 if "messages" not in st.session_state:
@@ -174,3 +195,23 @@ if prompt := st.chat_input("今日は何が食べたい気分ですか？"):
         stream = generate_response(query=prompt)
         response = st.write_stream(stream=stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+# ユーザーのFeedbackを収集し、Langfuseに連携する実装例
+# if "run_id" in st.session_state:
+#     user_feedback = streamlit_feedback(
+#         feedback_type="thumbs",
+#         optional_text_label="[オプション] 理由を教えてください。",
+#         key=session_id,
+#     )
+#     if user_feedback is not None:
+#         score_map = {"👍": 1, "👎": 0}
+#         score = score_map.get(user_feedback.get("score"))
+#         comment = user_feedback.get("text")
+#         if score is not None:
+#             trace_id = langchain_callback.get_trace_id()
+#             langfuse.score(
+#                 trace_id=trace_id,
+#                 value=score,
+#                 name="user-feedback",
+#                 comment=comment,
+#             )

@@ -7,6 +7,7 @@ anyio==4.4.0
 asttokens==2.4.1
 attrs==24.2.0
 backoff==2.2.1
+beautifulsoup4==4.12.3
 blinker==1.8.2
 boto3==1.35.10
 botocore==1.35.10
@@ -58,12 +59,14 @@ langchain-openai==0.2.1
 langchain-text-splitters==0.3.0
 langfuse==2.45.2
 langgraph==0.2.32
+langgraph-checkpoint==2.0.0
 langsmith==0.1.125
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 marshmallow==3.22.0
 matplotlib-inline==0.1.7
 mdurl==0.1.2
+msgpack==1.1.0
 multidict==6.0.5
 mypy-extensions==1.0.0
 narwhals==1.7.0
@@ -90,7 +93,6 @@ pydantic_core==2.20.1
 pydeck==0.9.1
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
-python-dotenv==1.0.1
 pytz==2024.1
 PyYAML==6.0.2
 pyzmq==26.2.0
@@ -103,6 +105,7 @@ s3transfer==0.10.2
 six==1.16.0
 smmap==5.0.1
 sniffio==1.3.1
+soupsieve==2.6
 SQLAlchemy==2.0.32
 stack-data==0.6.3
 streamlit==1.38.0
