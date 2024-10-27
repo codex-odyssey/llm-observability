@@ -17,9 +17,6 @@ logger = logging.getLogger(name=__name__)
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 cohere_api_key = os.getenv("COHERE_API_KEY")
-endpoint = os.getenv("LANGFUSE_ENDPOINT")
-public_key = os.getenv("LANGFUSE_PUBLIC_KEY")
-secret_key = os.getenv("LANGFUSE_SECRET_KEY")
 fallback_prompt = """
 以下の質問に答えてください。
 
@@ -34,15 +31,10 @@ session_id = st.session_state["session_id"]
 
 # Langfuse関連
 if "langfuse" not in st.session_state:
-    st.session_state["langfuse"] = Langfuse(
-        public_key=public_key, secret_key=secret_key, host=endpoint
-    )
+    st.session_state["langfuse"] = Langfuse()
 langfuse = st.session_state["langfuse"]
 if "langchain_callback" not in st.session_state:
     st.session_state["langchain_callback"] = CallbackHandler(
-        host=endpoint,
-        public_key=public_key,
-        secret_key=secret_key,
         session_id=session_id,
         trace_name="Ask the BigBaBy",
         tags=["app"],

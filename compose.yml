@@ -15,7 +15,7 @@ services:
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       COHERE_API_KEY: ${COHERE_API_KEY}
-      LANGFUSE_ENDPOINT: http://langfuse-server:3000
+      LANGFUSE_HOST: http://langfuse-server:3000
       LANGFUSE_PUBLIC_KEY: pk-1234567890
       LANGFUSE_SECRET_KEY: sk-1234567890
       LANGFUSE_RELEASE: 0.0.1-SNAPSHOT
@@ -88,8 +88,9 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       COHERE_API_KEY: ${COHERE_API_KEY}
       JUPYTER_ENABLE_LAB: yes
-      PUBLIC_KEY: pk-1234567890
-      SECRET_KEY: sk-1234567890
+      LANGFUSE_HOST: http://langfuse-server:3000
+      LANGFUSE_PUBLIC_KEY: pk-1234567890
+      LANGFUSE_SECRET_KEY: sk-1234567890
 
 networks:
   llm-observability:

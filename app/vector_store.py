@@ -11,11 +11,8 @@ logger = logging.getLogger(name=__name__)
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 cohere_api_key = os.getenv("COHERE_API_KEY")
-endpoint = os.getenv("LANGFUSE_ENDPOINT")
-public_key = os.getenv("LANGFUSE_PUBLIC_KEY")
-secret_key = os.getenv("LANGFUSE_SECRET_KEY")
 
-langfuse = Langfuse(public_key=public_key, secret_key=secret_key, host=endpoint)
+langfuse = Langfuse()
 
 
 def initialize(model_name: str, session_id: str) -> FAISS:
