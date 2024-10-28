@@ -56,7 +56,7 @@ with st.sidebar.container():
         st.sidebar.markdown("### LLM関連パラメータ")
         model_name = st.sidebar.selectbox(
             label="Model Name",
-            options=["command-r-plus", "gpt-4o-mini"],
+            options=["gpt-4o-mini", "command-r-plus"],
         )
         max_tokens = st.sidebar.slider(
             label="Max Tokens",
