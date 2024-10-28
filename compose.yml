@@ -83,6 +83,7 @@ services:
     volumes:
       - ./notebooks:/home/jovyan/work
       - ./requirements.txt:/home/jovyan/requirements.txt
+      - ./app/docs:/home/jovyan/docs
     command: start-notebook.sh --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True --port=8080 --notebook-dir=/home/jovyan/work
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
