@@ -1,6 +1,6 @@
 # LLM Observability
 
-この度は『俺たちと探究する LLM オブザーバビリティ』をお読みいただき、誠にありがとうございます。   
+この度は『[俺たちと探究する LLM アプリケーションのオブザーバビリティ](https://techbookfest.org/product/mn0L7GEm3s8Vhmxq971HEi?productVariantID=myG2YLxFNAEVkRf2dipG8f)』をお読みいただき、誠にありがとうございます。   
 （また、本リポジトリに Star をつけていただけると、大変嬉しいです。）
 
 ## 前提
@@ -23,17 +23,12 @@ cp .env.sample .env
 # LLM
 OPENAI_API_KEY="sk-proj-..."
 COHERE_API_KEY="RTel..."
-
-# Langfuse
-ENDPOINT="http://langfuse-server:3000"
-PUBLIC_KEY="pk-lf-..."
-SECRET_KEY="sk-lf-..."
 ```
 
 アプリケーションを起動します。
 
 ```sh
-docker compose up --build -d
+docker compose watch
 ```
 
 以下のようなステータスであれば、起動に成功しています。
@@ -50,6 +45,7 @@ postgresql   postgres                "docker-entrypoint.s…"   db              
 
 - アプリケーション: [http://localhost:8501](http://localhost:8501)
 - Langfuse: [http://localhost:3000](http://localhost:3000)
+- JupyterLab: [http://localhost:8080](http://localhost:8080)
 
 ## 諸注意
 
